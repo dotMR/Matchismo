@@ -23,6 +23,7 @@
 		99AD972516C1982F00E5E8D5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99AD970016C1982F00E5E8D5 /* Foundation.framework */; };
 		99AD972D16C1982F00E5E8D5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 99AD972B16C1982F00E5E8D5 /* InfoPlist.strings */; };
 		99AD973016C1982F00E5E8D5 /* MatchismoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 99AD972F16C1982F00E5E8D5 /* MatchismoTests.m */; };
+		99E8D06016C709E100C5E4BF /* bear.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 99E8D05F16C709E100C5E4BF /* bear.jpg */; };
 		99F4E3FE16C1E73400F7916F /* PlayingCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F4E3FD16C1E73400F7916F /* PlayingCard.m */; };
 		99F4E40116C1E75100F7916F /* Deck.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F4E40016C1E75100F7916F /* Deck.m */; };
 		99F4E40416C1E77400F7916F /* PlayingCardDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = 99F4E40316C1E77400F7916F /* PlayingCardDeck.m */; };
@@ -63,6 +64,7 @@
 		99AD972C16C1982F00E5E8D5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		99AD972E16C1982F00E5E8D5 /* MatchismoTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchismoTests.h; sourceTree = "<group>"; };
 		99AD972F16C1982F00E5E8D5 /* MatchismoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchismoTests.m; sourceTree = "<group>"; };
+		99E8D05F16C709E100C5E4BF /* bear.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bear.jpg; sourceTree = "<group>"; };
 		99F4E3FC16C1E73400F7916F /* PlayingCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayingCard.h; path = Model/PlayingCard.h; sourceTree = "<group>"; };
 		99F4E3FD16C1E73400F7916F /* PlayingCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayingCard.m; path = Model/PlayingCard.m; sourceTree = "<group>"; };
 		99F4E3FF16C1E75100F7916F /* Deck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Deck.h; path = Model/Deck.h; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		99AD970416C1982F00E5E8D5 /* Matchismo */ = {
 			isa = PBXGroup;
 			children = (
+				99E8D05F16C709E100C5E4BF /* bear.jpg */,
 				99F4E3F816C1E68600F7916F /* Model */,
 				99AD971616C1982F00E5E8D5 /* MainStoryboard.storyboard */,
 				99AD971916C1982F00E5E8D5 /* CardNameViewController.h */,
@@ -270,6 +273,7 @@
 				99AD971316C1982F00E5E8D5 /* Default@2x.png in Resources */,
 				99AD971516C1982F00E5E8D5 /* Default-568h@2x.png in Resources */,
 				99AD971816C1982F00E5E8D5 /* MainStoryboard.storyboard in Resources */,
+				99E8D06016C709E100C5E4BF /* bear.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

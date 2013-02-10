@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *flipCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *playByPlayLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeControl;
 @property (strong, nonatomic) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *allCards;
 @end
@@ -22,7 +23,7 @@
 
 - (CardMatchingGame *)game
 {
-    if(!_game) _game = [[CardMatchingGame alloc] initWithCardCount:self.allCards.count usingDeck:[[PlayingCardDeck alloc] init]];
+    if(!_game) _game = [[CardMatchingGame alloc] initWithCardCount:self.allCards.count usingDeck:[[PlayingCardDeck alloc] init] usingNumCardsToMatch:2];
     
     return _game;
 }
@@ -42,6 +43,17 @@
         cardButton.selected = card.isFaceUp;
         cardButton.enabled = !card.isUnplayable;
         cardButton.alpha = card.isUnplayable ? 0.3 : 1.0;
+        
+//        UIImage *cardBackImage = [UIImage imageNamed:@"bear.jpg"];
+//        [cardButton setBackgroundImage:cardBackImage forState:UIControlStateNormal];
+//
+//        [cardButton setBackgroundImage:nil forState:UIControlStateSelected];
+//        [cardButton setBackgroundImage:nil forState:UIControlStateDisabled];
+//        
+//        if(!card.isFaceUp)
+//        {
+//            
+//        }
     }
     
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d",self.game.score];
@@ -54,12 +66,25 @@
 - (IBAction)dealNewGame:(id)sender
 {
     self.game = nil;
+    self.game.numCardsToMatch = (self.matchModeControl.selectedSegmentIndex + 2);
     [self updateUI];
+    self.matchModeControl.enabled = TRUE;
 }
 
 - (IBAction)flipCard:(UIButton *)sender
 {
     [self.game flipCardAtIndex:[self.allCards indexOfObject:sender]];
+    [self updateUI];
+    
+    if(self.matchModeControl.isEnabled)
+    {
+        self.matchModeControl.enabled = FALSE;
+    }
+}
+
+- (IBAction)matchMode:(UISegmentedControl *)sender
+{
+    self.game.numCardsToMatch = (sender.selectedSegmentIndex + 2);
     [self updateUI];
 }
 

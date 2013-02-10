@@ -49,17 +49,16 @@
     }
 }
 
-- (int)match:(NSArray *)otherCards
+// updated to move game logic into appropriate class
+// compare will do a direct compare against given card
+- (int)match:(PlayingCard *) cardToCompare
 {
     int score = 0;
-    
-    if(otherCards.count == 1) {
-        PlayingCard *otherCard = [otherCards lastObject];
-        if([otherCard.suit isEqualToString:self.suit]) {
-            score = 1;
-        } else if (otherCard.rank == self.rank) {
-            score = 4;
-        }
+
+    if([cardToCompare.suit isEqualToString:self.suit]) {
+        score = 1;
+    } else if (cardToCompare.rank == self.rank) {
+        score = 4;
     }
     
     return score;

@@ -16,6 +16,6 @@
 
 @property (nonatomic, getter = isUnplayable) BOOL unplayable;
 
-- (int)match:(NSArray *)otherCards;
+- (int)match:(Card *)otherCard;
 
 @end
