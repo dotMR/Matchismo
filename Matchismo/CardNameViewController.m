@@ -44,22 +44,17 @@
         cardButton.enabled = !card.isUnplayable;
         cardButton.alpha = card.isUnplayable ? 0.3 : 1.0;
         
-//        UIImage *cardBackImage = [UIImage imageNamed:@"bear.jpg"];
-//        [cardButton setBackgroundImage:cardBackImage forState:UIControlStateNormal];
-//
-//        [cardButton setBackgroundImage:nil forState:UIControlStateSelected];
-//        [cardButton setBackgroundImage:nil forState:UIControlStateDisabled];
-//        
-//        if(!card.isFaceUp)
-//        {
-//            
-//        }
+        UIImage *cardBackImage = [UIImage imageNamed:@"bear.jpg"];
+        UIImage *emptyImage = [UIImage imageNamed:@"1x1-pixel.png"];
+        [cardButton setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+        
+        [cardButton setImage:cardBackImage forState:UIControlStateNormal];
+        [cardButton setImage:emptyImage forState:UIControlStateSelected];
+        [cardButton setImage:emptyImage forState:UIControlStateDisabled|UIControlStateSelected];
     }
     
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d",self.game.score];
-    
     self.flipCountLabel.text = [NSString stringWithFormat:@"Flips: %d",self.game.flipCount];
-    
     self.playByPlayLabel.text = self.game.gameHistory.lastObject;
 }
 

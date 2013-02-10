@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[CardMatchingGame flipCardAtIndex:]:CardMatchingGame.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.numPlayableFaceUpCards">
+            </PersistentString>
+            <PersistentString
+               value = "self.numCardsToMatch">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

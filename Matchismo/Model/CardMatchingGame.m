@@ -76,9 +76,24 @@
     return (index < self.cards.count) ? self.cards[index] : nil;
 }
 
-#define FLIP_COST -1;
-#define MISMATCH_PENALTY -2;
-#define MATCH_BONUS 4;
+- (int) numPlayableFaceUpCards
+{
+    int numCards = 0;
+    
+    for(Card *card in self.cards)
+    {
+        if(card.isFaceUp && !card.isUnplayable)
+        {
+            numCards++;
+        }
+    }
+    
+    return numCards;
+}
+
+#define FLIP_COST (-1)
+#define MISMATCH_PENALTY (-2)
+#define MATCH_BONUS (4)
 
 - (void)flipCardAtIndex:(NSUInteger)index
 {
@@ -86,85 +101,65 @@
     
     if(!card.isUnplayable)
     {
-        if(card.isFaceUp)
-        {
-            [self.matchCards removeObject:card];
-        }
-        else
+        if(!card.isFaceUp)
         {
             self.flipCount++;
             self.score += FLIP_COST;
-            [self.matchCards addObject:card];
             [self recordGameAction:[NSString stringWithFormat:@"Flipped: %@", card.contents]];
             
-            if(self.matchCards.count == self.numCardsToMatch)
+            if(self.numPlayableFaceUpCards == (self.numCardsToMatch-1))
             {
-                int matchScore = 0;
                 int totalMoveScore = 0;
+                BOOL matchFailed = FALSE;
+                NSMutableArray * cardsMatched = [[NSMutableArray alloc] init];
                 
-                if(self.matchCards.count == 2)
+                for(Card *thisCard in self.cards)
                 {
-                    Card *otherCard = [self.matchCards objectAtIndex:0];
-                    matchScore = [card match:otherCard];
-                    
-                    if(matchScore > 0)
+                    if(thisCard.isFaceUp && !thisCard.isUnplayable && ![card isEqual:thisCard])
                     {
-                        otherCard.unplayable = card.unplayable = YES;
+                        [cardsMatched addObject:thisCard];
+                        int thisMatchScore = [card match:thisCard];
                         
-                        totalMoveScore = matchScore * MATCH_BONUS;
-                        self.score += totalMoveScore;
-                        
-                        [self recordGameAction:[NSString stringWithFormat:@"Matched %@ with %@ : %d points!", card.contents, otherCard.contents, totalMoveScore]];
-                        [self.matchCards removeObject:otherCard];
+                        if(thisMatchScore > 0)
+                        {
+                            matchFailed = FALSE;
+                            totalMoveScore += thisMatchScore * MATCH_BONUS;
+                        }
+                        else
+                        {
+                            matchFailed = TRUE;
+                            totalMoveScore = MISMATCH_PENALTY;
+                            break;
+                        }
                     }
-                    else
-                    {
-                        otherCard.faceUp = NO;
-                        
-                        totalMoveScore = MISMATCH_PENALTY;
-                        self.score += totalMoveScore;
-                        
-                        [self recordGameAction:[NSString stringWithFormat:@"No match! %@ with %@ : %d points", card.contents, otherCard.contents, totalMoveScore]];
-                    }
-                    
-                    [self.matchCards removeObject:card];
                 }
-                else if(self.matchCards.count == 3)
+                
+                NSString * action = [[NSString alloc] init];
+                
+                if(matchFailed)
                 {
-                    Card * c1 = [self.matchCards objectAtIndex:0];
-                    Card * c2 = [self.matchCards objectAtIndex:1];
-
-                    int m1 = [card match:c1];
-                    int m2 = [card match:c2];
-                    int m3 = [c1 match:c2];
+                    action = [NSString stringWithFormat: @"No match for %@, %@ : %d points", card.contents,[cardsMatched componentsJoinedByString:@", "], totalMoveScore];
                     
-                    if (m1>0 && m2>0 && m3>0)
+                    for(Card *c in cardsMatched)
                     {
-                        card.unplayable = c1.unplayable = c2.unplayable = YES;
-                        
-                        totalMoveScore += m1 * MATCH_BONUS;
-                        totalMoveScore += m2 * MATCH_BONUS;
-                        totalMoveScore += m3 * MATCH_BONUS;
-                        self.score += totalMoveScore;
-                        
-                        [self recordGameAction:[NSString stringWithFormat:@"Matched %@, %@, %@ : %d points!", card.contents, c1.contents, c2.contents, totalMoveScore]];
-                        [self.matchCards removeObject:c1];
-                        [self.matchCards removeObject:c2];
+                        c.faceUp = NO;
                     }
-                    else
-                    {
-                        c1.faceUp = c2.faceUp = NO;
-                        
-                        totalMoveScore = MISMATCH_PENALTY;
-                        self.score += totalMoveScore;
-                        
-                        [self recordGameAction:[NSString stringWithFormat:@"No match for %@, %@, %@ : %d points", card.contents, c1.contents, c2.contents, totalMoveScore]];
-                        
-                        [self.matchCards removeObject:c1];
-                    }
-                    
-                    [self.matchCards removeObject:card];
                 }
+                else
+                {
+                    action = [NSString stringWithFormat: @"Matched %@, %@ for %d points!", card.contents, [cardsMatched componentsJoinedByString:@", "], totalMoveScore];
+                    
+                    card.unplayable = YES;
+                    
+                    for(Card *c in cardsMatched)
+                    {
+                        c.faceUp = c.unplayable = YES;
+                    }
+                }
+                
+                self.score += totalMoveScore;
+                [self recordGameAction:action];
+                [cardsMatched removeAllObjects];
             }
         }
         
