@@ -10,6 +10,11 @@
 
 @implementation Card
 
+- (NSString *) description
+{
+    return self.contents;
+}
+
 - (int)match:(Card *)otherCard
 {
     int score = 0;

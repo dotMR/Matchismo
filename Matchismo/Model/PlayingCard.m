@@ -10,11 +10,6 @@
 
 @implementation PlayingCard
 
-- (NSString *) description
-{
-    return self.contents;
-}
-
 - (NSString *)contents
 {
     NSArray *rankStrings = [PlayingCard rankStrings];
