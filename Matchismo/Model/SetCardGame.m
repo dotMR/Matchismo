@@ -118,22 +118,26 @@
                     
                     if(matchScore > 0)
                     {
-                        action = @"Match!";
+                        action = [NSString stringWithFormat:@"Matched: %@", setCard.contents];
                         setCard.faceUp = setCard.unplayable = YES;
                         
                         for(Card *c in selectedCards)
                         {
                             c.faceUp = c.unplayable = YES;
+                            action = [action stringByAppendingFormat:@" %@", c.contents];
                         }
+                        
+                        action = [action stringByAppendingFormat:@" :%d pts!", matchScore];
                     }
                     else
                     {
                         matchScore = MISMATCH_PENALTY;
-                        action = @"No match!";
+                        action = [NSString stringWithFormat:@"No Match For: %@", setCard.contents];
                         
                         for(Card *c in selectedCards)
                         {
                             c.faceUp = c.unplayable = NO;
+                            action = [action stringByAppendingFormat:@" %@", c.contents];
                         }
                     }
                     

@@ -3,18 +3,18 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[SetGameViewController getAttributedStringForCard:]:SetGameViewController.m">
+         contextName = "-[SetGameViewController updateUI]:SetGameViewController.m">
       </ContextState>
       <ContextState
-         contextName = "-[SetGameViewController getShapeStringForCard:]:SetGameViewController.m">
+         contextName = "-[SetCard matchCards:]:SetCard.m">
          <PersistentStrings>
             <PersistentString
-               value = "[SetCard maxRank]">
+               value = "(self.rank != cardComp1.rank != cardComp2.rank)">
+            </PersistentString>
+            <PersistentString
+               value = "self.rank == cardComp1.rank == cardComp2">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "main:main.m">
       </ContextState>
       <ContextState
          contextName = "-[CardMatchingGame flipCardAtIndex:]:CardMatchingGame.m">
@@ -28,6 +28,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "main:main.m">
+      </ContextState>
+      <ContextState
          contextName = "-[SetCardDeck init]:SetCardDeck.m">
          <PersistentStrings>
             <PersistentString
@@ -36,7 +39,15 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "-[SetGameViewController updateUI]:SetGameViewController.m">
+         contextName = "-[SetGameViewController getAttributedStringForCard:]:SetGameViewController.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[SetGameViewController getShapeStringForCard:]:SetGameViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[SetCard maxRank]">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

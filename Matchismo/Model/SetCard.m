@@ -12,7 +12,46 @@
 
 - (NSString *)contents
 {
-    return [NSString stringWithFormat: @"%@ %@ : %d x %@", self.fillPattern, self.color, self.rank, self.shape];
+    return [self dehydrateCardToString];
+}
+
+- (NSString *) dehydrateCardToString
+{
+    return [NSString stringWithFormat: @"[%d_%@_%@_%@]", self.rank, self.shape, self.fillPattern, self.color];
+}
+
++ (SetCard *) initCardFromDehydratedString: (NSString *)dehydratedCard
+{
+    SetCard *newCard = nil;
+    
+    if( [dehydratedCard hasPrefix:@"["] && [dehydratedCard hasSuffix:@"]"])
+    {
+        NSRange startRange = [dehydratedCard rangeOfString:@"["];
+        NSRange endRange = [dehydratedCard rangeOfString:@"]"];
+        
+        NSString *sub = [dehydratedCard substringWithRange: NSMakeRange(startRange.location+1, endRange.location-1)];
+        
+        // if string contains 3 '_' characters with non nill strings in between
+        NSArray *parts = [sub componentsSeparatedByString:@"_"];
+        
+        if(parts.count == 4)
+        {
+            NSUInteger rank = [parts[0] integerValue];
+            NSString *shapeId = (NSString *) parts[1];
+            NSString *fillId = (NSString *) parts[2];
+            NSString *colorId = (NSString *) parts[3];
+            
+            newCard = [[SetCard alloc] init];
+            newCard.rank = rank;
+            newCard.shape = shapeId;
+            newCard.fillPattern = fillId;
+            newCard.color = colorId;
+            
+            return newCard;
+        }
+    }
+    
+    return newCard;
 }
 
 + (NSArray *)validRanks
@@ -48,6 +87,8 @@
         if(cardComp1 && cardComp2)
         {
             Boolean ranksAreEqual = (self.rank == cardComp1.rank == cardComp2.rank);
+            
+            // TODO: This is not working right (3,2,3 is passing)
             Boolean ranksAreNotEqual = (self.rank != cardComp1.rank != cardComp2.rank);
             
             Boolean shapesAreEqual = [self isString1:[self shape] EqualToString2:[cardComp1 shape] EqualToString3:[cardComp2 shape]];

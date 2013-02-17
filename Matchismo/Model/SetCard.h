@@ -21,6 +21,9 @@
 + (NSArray *)validShapes;
 - (int)matchCards:(NSArray *)cardsToCompare;
 
+// initializer for creating SetCard from String (see implementation for details)
++ (SetCard *) initCardFromDehydratedString: (NSString *)dehydratedCard;
+
 + (NSUInteger)maxRank;
 
 @end

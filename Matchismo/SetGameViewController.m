@@ -45,7 +45,7 @@
         {
             SetCard *setCard = (SetCard *)card;
             
-            [cardButton setAttributedTitle:[self getAttributedStringForCard:setCard] forState:UIControlStateNormal];
+            [cardButton setAttributedTitle:[self getAttributedStringToRepresentCardWithRank:setCard.rank andShape:setCard.shape andFill:setCard.fillPattern andColor:setCard.color] forState:UIControlStateNormal];
             
             UIColor *borderColor = [UIColor grayColor];
             CGFloat borderWidth = 1;
@@ -72,31 +72,85 @@
     
     self.lbl_Score.text = [NSString stringWithFormat:@"Score: %d",self.game.score];
     self.lbl_Flips.text = [NSString stringWithFormat:@"Flips: %d",self.game.flipCount];
-    self.lbl_PlayByPlay.text = self.game.gameHistory.lastObject;
+    self.lbl_PlayByPlay.attributedText = [self getPrettyPlayByPlayForSetGameHistory:self.game.gameHistory.lastObject];
 }
 
--(NSAttributedString *)getAttributedStringForCard: (SetCard *)card
-{
-    NSString *shapes = [self getShapeStringForCard:card];
-    NSDictionary *attribs = @{};
+- (NSAttributedString *) getPrettyPlayByPlayForSetGameHistory: (NSString *)recentGameHistory
+{    
+    NSArray * words = [recentGameHistory componentsSeparatedByString:@" "];
+    NSMutableAttributedString *prettyString = [[NSMutableAttributedString alloc] init];
+    
+    for (NSString *word in words)
+    {
+        SetCard *possibleCard = [SetCard initCardFromDehydratedString:word];
+        if(possibleCard)
+        {
+            NSAttributedString *cardRepresentationToMakePretty = [self getAttributedStringToRepresentCardWithRank:possibleCard.rank andShape:possibleCard.shape andFill:possibleCard.fillPattern andColor:possibleCard.color];
+            
+            [prettyString appendAttributedString:cardRepresentationToMakePretty];
+        }
+        else
+        {
+            NSAttributedString *attr = [[NSAttributedString alloc] initWithString:word];
+            [prettyString appendAttributedString:attr];
+        }
+        
+        NSAttributedString *attr = [[NSAttributedString alloc] initWithString:@" "];
+        [prettyString appendAttributedString:attr];
+    }
+    
+    return prettyString;
+}
 
-    if( [card.fillPattern isEqualToString: @"Empty"] )
+-(NSAttributedString *)getAttributedStringToRepresentCardWithRank:(NSUInteger)rank andShape:(NSString *)shapeId andFill:(NSString *)fillPatternID andColor:(NSString *)colorId
+{
+    NSString *shapes = [self getShapeStringToRepresentCardWithRank:rank andShape:shapeId];
+    NSDictionary *attribs = @{};
+    
+    if( [fillPatternID isEqualToString: @"Empty"] )
     {
-        attribs = @{NSForegroundColorAttributeName: [self getColorForCard:card],
-                    NSStrokeWidthAttributeName: @7};
+        attribs = @{NSForegroundColorAttributeName: [self getUIColorWithAlphaToRepresentCardWithColorId:colorId andFillPattern:fillPatternID], NSStrokeWidthAttributeName: @7};
     }
-    else if( [card.fillPattern isEqualToString: @"Partial"] )
+    else if( [fillPatternID isEqualToString: @"Partial"] )
     {
-        attribs = @{NSForegroundColorAttributeName : [self getColorForCard:card],
-                    NSStrokeWidthAttributeName: @-7};
+        attribs = @{NSForegroundColorAttributeName : [self getUIColorWithAlphaToRepresentCardWithColorId:colorId andFillPattern:fillPatternID], NSStrokeWidthAttributeName: @-7};
     }
-    else if( [card.fillPattern isEqualToString: @"Solid"] )
+    else if( [fillPatternID isEqualToString: @"Solid"] )
     {
-        attribs = @{NSForegroundColorAttributeName : [self getColorForCard:card],
-                    NSStrokeWidthAttributeName: @-3};
+        attribs = @{NSForegroundColorAttributeName : [self getUIColorWithAlphaToRepresentCardWithColorId:colorId andFillPattern:fillPatternID], NSStrokeWidthAttributeName: @-3};
     }
     
     return [[NSAttributedString alloc] initWithString:shapes attributes:attribs];
+}
+
+// TODO: reference Shape color in SetCard class
+- (UIColor *)getUIColorWithAlphaToRepresentCardWithColorId: (NSString *)colorId andFillPattern:(NSString *)fillPatternId
+{
+    UIColor *shapeColor = [UIColor grayColor];
+
+    if( [colorId isEqualToString: @"Red"] ) shapeColor = [UIColor redColor];
+    else if( [colorId isEqualToString: @"Blue"] ) shapeColor = [UIColor blueColor];
+    else if( [colorId isEqualToString: @"Purple"] ) shapeColor = [UIColor purpleColor];
+    
+    return [shapeColor colorWithAlphaComponent: [self getAlphaValueForFillPattern:fillPatternId]];
+}
+
+- (CGFloat)getAlphaValueForFillPattern: (NSString *)fillPatternId
+{
+    if( [fillPatternId isEqualToString: @"Partial"] ) { return 0.4; }
+    else { return 1; }
+}
+
+// TODO: reference Shape title in SetCard class
+- (NSString *)getShapeStringToRepresentCardWithRank: (NSUInteger)rank andShape: (NSString *)shapeId
+{
+    NSString *baseShape = @"";
+    
+    if( [shapeId isEqualToString: @"Square"] ) baseShape = @"■";
+    else if( [shapeId isEqualToString: @"Circle"] ) baseShape = @"●";
+    else if( [shapeId isEqualToString:@"Triangle"] )baseShape = @"▲";
+    
+    return [@"" stringByPaddingToLength:rank withString:baseShape startingAtIndex:0];
 }
 
 - (IBAction)dealCards
@@ -109,36 +163,6 @@
 {
     [self.game flipCardAtIndex:[self.allCards indexOfObject:sender]];
     [self updateUI];
-}
-
-- (UIColor *)getColorForCard: (SetCard *)card
-{
-    UIColor *shapeColor = [UIColor grayColor];
-    
-    // TODO: reference Shape color in SetCard class
-    if( [card.color isEqualToString: @"Red"] ) shapeColor = [UIColor redColor];
-    else if( [card.color isEqualToString: @"Blue"] ) shapeColor = [UIColor blueColor];
-    else if( [card.color isEqualToString: @"Purple"] ) shapeColor = [UIColor purpleColor];
-    
-    return [shapeColor colorWithAlphaComponent: [self getAlphaForCard:card]];
-}
-
-- (NSString *) getShapeStringForCard: (SetCard *)card
-{
-    NSString *baseShape = @"";
-    
-    // TODO: reference Shape title in SetCard class
-    if( [card.shape isEqualToString: @"Square"] ) baseShape = @"■";
-    else if( [card.shape isEqualToString: @"Circle"] ) baseShape = @"●";
-    else if( [card.shape isEqualToString:@"Triangle"] )baseShape = @"▲";
-    
-    return [@"" stringByPaddingToLength:card.rank withString:baseShape startingAtIndex:0];
-}
-
-- (CGFloat) getAlphaForCard: (SetCard *)card
-{
-    if( [card.fillPattern isEqualToString: @"Partial"] ) { return 0.4; }
-    else { return 1; }
 }
 
 @end
