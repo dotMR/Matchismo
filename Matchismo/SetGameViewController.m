@@ -14,29 +14,34 @@
 
 @interface SetGameViewController ()
 @property (strong, nonatomic) SetCardGame *game;
-@property (weak, nonatomic) IBOutlet UILabel *lbl_Score;
-@property (weak, nonatomic) IBOutlet UILabel *lbl_Flips;
-@property (weak, nonatomic) IBOutlet UILabel *lbl_PlayByPlay;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *allCards;
 @end
 
 @implementation SetGameViewController
 
-- (SetCardGame *)game
+-(Deck *) createDeck
 {
-    if(!_game) _game = [[SetCardGame alloc] initWithCardCount:self.allCards.count usingDeck:[[SetCardDeck alloc] init]];
-    
-    return _game;
+    return [[SetCardDeck alloc] init];
 }
 
-- (void) setAllCards:(NSArray *)allCards
+-(Class) cardGameClass
+{
+    return [SetCardGame class];
+}
+
+-(NSUInteger) startingCardCount
+{
+    return 20;
+}
+
+-(void) setAllCards:(NSArray *)allCards
 {
     _allCards = allCards;
     [self updateUI];
 }
 
 // TODO: does the getCardAtIndex() method really need to care about generic Cards here?
-- (void) updateUI
+-(void) updateUI
 {
     for (UIButton *cardButton in self.allCards) {
         Card *card = [self.game cardAtIndex:[self.allCards indexOfObject:cardButton]];
@@ -70,12 +75,12 @@
         }
     }
     
-    self.lbl_Score.text = [NSString stringWithFormat:@"Score: %d",self.game.score];
-    self.lbl_Flips.text = [NSString stringWithFormat:@"Flips: %d",self.game.flipCount];
-    self.lbl_PlayByPlay.attributedText = [self getPrettyPlayByPlayForSetGameHistory:self.game.gameHistory.lastObject];
+    [self updateFlipsLabel:[NSString stringWithFormat:@"Flips: %d",self.game.flipCount]];
+    [self updateScoreLabel:[NSString stringWithFormat:@"Score: %d",self.game.score]];
+    [self updateGameMessageLabel:[self getPrettyPlayByPlayForSetGameHistory:self.game.gameHistory.lastObject]];
 }
 
-- (NSAttributedString *) getPrettyPlayByPlayForSetGameHistory: (NSString *)recentGameHistory
+-(NSAttributedString *) getPrettyPlayByPlayForSetGameHistory: (NSString *)recentGameHistory
 {    
     NSArray * words = [recentGameHistory componentsSeparatedByString:@" "];
     NSMutableAttributedString *prettyString = [[NSMutableAttributedString alloc] init];
@@ -124,7 +129,7 @@
 }
 
 // TODO: reference Shape color in SetCard class
-- (UIColor *)getUIColorWithAlphaToRepresentCardWithColorId: (NSString *)colorId andFillPattern:(NSString *)fillPatternId
+-(UIColor *)getUIColorWithAlphaToRepresentCardWithColorId: (NSString *)colorId andFillPattern:(NSString *)fillPatternId
 {
     UIColor *shapeColor = [UIColor grayColor];
 
@@ -135,14 +140,14 @@
     return [shapeColor colorWithAlphaComponent: [self getAlphaValueForFillPattern:fillPatternId]];
 }
 
-- (CGFloat)getAlphaValueForFillPattern: (NSString *)fillPatternId
+-(CGFloat)getAlphaValueForFillPattern: (NSString *)fillPatternId
 {
     if( [fillPatternId isEqualToString: @"Partial"] ) { return 0.4; }
     else { return 1; }
 }
 
 // TODO: reference Shape title in SetCard class
-- (NSString *)getShapeStringToRepresentCardWithRank: (NSUInteger)rank andShape: (NSString *)shapeId
+-(NSString *)getShapeStringToRepresentCardWithRank: (NSUInteger)rank andShape: (NSString *)shapeId
 {
     NSString *baseShape = @"";
     
@@ -153,13 +158,13 @@
     return [@"" stringByPaddingToLength:rank withString:baseShape startingAtIndex:0];
 }
 
-- (IBAction)dealCards
+- (void) handleDealButtonPressed
 {
-    self.game = nil;
+    [super handleDealButtonPressed];
     [self updateUI];
 }
 
-- (IBAction)flipCard:(id)sender
+-(IBAction)flipCard:(id)sender
 {
     [self.game flipCardAtIndex:[self.allCards indexOfObject:sender]];
     [self updateUI];

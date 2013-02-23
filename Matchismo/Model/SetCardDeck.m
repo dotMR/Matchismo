@@ -14,7 +14,6 @@
 - (id)init
 {
     self = [super init];
-    
     if (self) {
         for (NSString *shape in [SetCard validShapes]) {
             for (NSString *color in [SetCard validColors]) {

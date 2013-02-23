@@ -6,29 +6,33 @@
 //  Copyright (c) 2013 theNumberTwo. All rights reserved.
 //
 
-#import "CardNameViewController.h"
+#import "MatchismoViewController.h"
 #import "PlayingCardDeck.h"
-#import "CardMatchingGame.h"
+#import "MatchismoCardGame.h"
 
-@interface CardNameViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *flipCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property (weak, nonatomic) IBOutlet UILabel *playByPlayLabel;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *matchModeControl;
-@property (strong, nonatomic) CardMatchingGame *game;
+@interface MatchismoViewController ()
+
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *allCards;
 @end
 
-@implementation CardNameViewController
+@implementation MatchismoViewController
 
-- (CardMatchingGame *)game
+-(Deck *) createDeck
 {
-    if(!_game) _game = [[CardMatchingGame alloc] initWithCardCount:self.allCards.count usingDeck:[[PlayingCardDeck alloc] init] usingNumCardsToMatch:2];
-    
-    return _game;
+    return [[PlayingCardDeck alloc] init];
 }
 
-- (void) setAllCards:(NSArray *)allCards
+-(NSUInteger) startingCardCount
+{
+    return 16;
+}
+
+-(Class) cardGameClass
+{
+    return [MatchismoCardGame class];
+}
+
+-(void) setAllCards:(NSArray *)allCards
 {
     _allCards = allCards;
     [self updateUI];
@@ -53,33 +57,21 @@
         [cardButton setImage:emptyImage forState:UIControlStateDisabled|UIControlStateSelected];
     }
     
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %d",self.game.score];
-    self.flipCountLabel.text = [NSString stringWithFormat:@"Flips: %d",self.game.flipCount];
-    self.playByPlayLabel.text = self.game.gameHistory.lastObject;
+    [self updateScoreLabel:[NSString stringWithFormat:@"Score: %d",self.game.score]];
+    [self updateFlipsLabel:[NSString stringWithFormat:@"Flips: %d",self.game.flipCount]];
+    
+    [self updateGameMessageLabel: [[NSAttributedString alloc] initWithString:self.game.gameHistory.lastObject]];
 }
 
-- (IBAction)dealNewGame:(id)sender
+- (void) handleDealButtonPressed
 {
-    self.game = nil;
-    self.game.numCardsToMatch = (self.matchModeControl.selectedSegmentIndex + 2);
+    [super handleDealButtonPressed];
     [self updateUI];
-    self.matchModeControl.enabled = TRUE;
 }
 
 - (IBAction)flipCard:(UIButton *)sender
 {
     [self.game flipCardAtIndex:[self.allCards indexOfObject:sender]];
-    [self updateUI];
-    
-    if(self.matchModeControl.isEnabled)
-    {
-        self.matchModeControl.enabled = FALSE;
-    }
-}
-
-- (IBAction)matchMode:(UISegmentedControl *)sender
-{
-    self.game.numCardsToMatch = (sender.selectedSegmentIndex + 2);
     [self updateUI];
 }
 
