@@ -9,17 +9,23 @@
 #import "MatchismoViewController.h"
 #import "PlayingCardDeck.h"
 #import "MatchismoCardGame.h"
+#import "CardViewCell.h"
+#import "CardView.h"
+#import "PlayingCard.h"
 
 @interface MatchismoViewController ()
-
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *allCards;
 @end
 
 @implementation MatchismoViewController
 
--(Deck *) createDeck
+-(Class) deckClassToInit
 {
-    return [[PlayingCardDeck alloc] init];
+    return [PlayingCardDeck class];
+}
+
+-(Class) cardGameClassToInit
+{
+    return [MatchismoCardGame class];
 }
 
 -(NSUInteger) startingCardCount
@@ -27,52 +33,21 @@
     return 16;
 }
 
--(Class) cardGameClass
+-(void) updateCell:(UICollectionViewCell *)cell usingCard:(Card *)card
 {
-    return [MatchismoCardGame class];
-}
-
--(void) setAllCards:(NSArray *)allCards
-{
-    _allCards = allCards;
-    [self updateUI];
-}
-
-- (void) updateUI
-{
-    for (UIButton *cardButton in self.allCards) {
-        Card *card = [self.game cardAtIndex:[self.allCards indexOfObject:cardButton]];
-        [cardButton setTitle:card.contents forState:UIControlStateSelected];
-        [cardButton setTitle:card.contents forState:UIControlStateSelected|UIControlStateDisabled];
-        cardButton.selected = card.isFaceUp;
-        cardButton.enabled = !card.isUnplayable;
-        cardButton.alpha = card.isUnplayable ? 0.3 : 1.0;
+    if( [cell isKindOfClass:[CardViewCell class]] )
+    {
+        CardView *view = ((CardViewCell *)cell).cardView;
         
-        UIImage *cardBackImage = [UIImage imageNamed:@"bear.jpg"];
-        UIImage *emptyImage = [UIImage imageNamed:@"1x1-pixel.png"];
-        [cardButton setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
-        
-        [cardButton setImage:cardBackImage forState:UIControlStateNormal];
-        [cardButton setImage:emptyImage forState:UIControlStateSelected];
-        [cardButton setImage:emptyImage forState:UIControlStateDisabled|UIControlStateSelected];
+        if( [card isKindOfClass:[PlayingCard class]] )
+        {
+            PlayingCard *playingCard = (PlayingCard *)card;
+            view.rank = playingCard.rank;
+            view.suit = playingCard.suit;
+            view.faceUp = playingCard.isFaceUp;
+            view.alpha = playingCard.isUnplayable ? 0.3 : 1.0;
+        }
     }
-    
-    [self updateScoreLabel:[NSString stringWithFormat:@"Score: %d",self.game.score]];
-    [self updateFlipsLabel:[NSString stringWithFormat:@"Flips: %d",self.game.flipCount]];
-    
-    [self updateGameMessageLabel: [[NSAttributedString alloc] initWithString:self.game.gameHistory.lastObject]];
-}
-
-- (void) handleDealButtonPressed
-{
-    [super handleDealButtonPressed];
-    [self updateUI];
-}
-
-- (IBAction)flipCard:(UIButton *)sender
-{
-    [self.game flipCardAtIndex:[self.allCards indexOfObject:sender]];
-    [self updateUI];
 }
 
 @end

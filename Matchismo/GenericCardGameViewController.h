@@ -9,22 +9,22 @@
 #import <UIKit/UIKit.h>
 #import "CardGame.h"
 #import "Deck.h"
+#import "CardViewCell.h"
 
 @interface GenericCardGameViewController : UIViewController
+
+@property (strong, nonatomic) CardGame *game;
 
 -(void) updateFlipsLabel: (NSString *)flipsLabelValue;
 -(void) updateScoreLabel: (NSString *)scoreLabelValue;
 -(void) updateGameMessageLabel: (NSAttributedString *)messageValue;
 
+// abstract: subclasses need to implement
 @property (nonatomic) NSUInteger startingCardCount;
+-(Class) deckClassToInit;
+-(Class) cardGameClassToInit;
+-(void) updateCell: (UICollectionViewCell *)cell usingCard:(Card *)card;
 
-// abstract : subclasses should implement 
--(void) handleDealButtonPressed;
--(Deck *) createDeck;
 
-// subclasses should provide the type of game
--(Class) cardGameClass;
-
-@property (strong, nonatomic) CardGame *game;
 
 @end

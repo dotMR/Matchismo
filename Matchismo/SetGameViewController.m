@@ -13,18 +13,17 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface SetGameViewController ()
-@property (strong, nonatomic) SetCardGame *game;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *allCards;
+
 @end
 
 @implementation SetGameViewController
 
--(Deck *) createDeck
+-(Class) deckClassToInit
 {
-    return [[SetCardDeck alloc] init];
+    return [SetCardDeck class];
 }
 
--(Class) cardGameClass
+-(Class) cardGameClassToInit
 {
     return [SetCardGame class];
 }
@@ -34,51 +33,41 @@
     return 20;
 }
 
--(void) setAllCards:(NSArray *)allCards
-{
-    _allCards = allCards;
-    [self updateUI];
-}
-
 // TODO: does the getCardAtIndex() method really need to care about generic Cards here?
--(void) updateUI
-{
-    for (UIButton *cardButton in self.allCards) {
-        Card *card = [self.game cardAtIndex:[self.allCards indexOfObject:cardButton]];
-        
-        if( [card isKindOfClass:[SetCard class]] )
-        {
-            SetCard *setCard = (SetCard *)card;
-            
-            [cardButton setAttributedTitle:[self getAttributedStringToRepresentCardWithRank:setCard.rank andShape:setCard.shape andFill:setCard.fillPattern andColor:setCard.color] forState:UIControlStateNormal];
-            
-            UIColor *borderColor = [UIColor grayColor];
-            CGFloat borderWidth = 1;
-            CGFloat cardAlpha = 1;
-            
-            if(card.isFaceUp)
-            {
-                borderColor = [UIColor greenColor];
-                borderWidth = 2;
-                cardAlpha = 0.35;
-            }
-            if (card.isUnplayable)
-            {
-                cardAlpha = 0.1;
-            }
-
-            cardButton.selected = card.isFaceUp;
-            cardButton.enabled = !card.isUnplayable;
-            cardButton.alpha = cardAlpha;
-            [[cardButton layer] setBorderWidth:borderWidth];
-            [[cardButton layer] setBorderColor:borderColor.CGColor];
-        }
-    }
-    
-    [self updateFlipsLabel:[NSString stringWithFormat:@"Flips: %d",self.game.flipCount]];
-    [self updateScoreLabel:[NSString stringWithFormat:@"Score: %d",self.game.score]];
-    [self updateGameMessageLabel:[self getPrettyPlayByPlayForSetGameHistory:self.game.gameHistory.lastObject]];
-}
+//-(void) updateUI
+//{
+//    for (UIButton *cardButton in self.allCards) {
+//        Card *card = [self.game cardAtIndex:[self.allCards indexOfObject:cardButton]];
+//        
+//        if( [card isKindOfClass:[SetCard class]] )
+//        {
+//            SetCard *setCard = (SetCard *)card;
+//            
+//            [cardButton setAttributedTitle:[self getAttributedStringToRepresentCardWithRank:setCard.rank andShape:setCard.shape andFill:setCard.fillPattern andColor:setCard.color] forState:UIControlStateNormal];
+//            
+//            UIColor *borderColor = [UIColor grayColor];
+//            CGFloat borderWidth = 1;
+//            CGFloat cardAlpha = 1;
+//            
+//            if(card.isFaceUp)
+//            {
+//                borderColor = [UIColor greenColor];
+//                borderWidth = 2;
+//                cardAlpha = 0.35;
+//            }
+//            if (card.isUnplayable)
+//            {
+//                cardAlpha = 0.1;
+//            }
+//
+//            cardButton.selected = card.isFaceUp;
+//            cardButton.enabled = !card.isUnplayable;
+//            cardButton.alpha = cardAlpha;
+//            [[cardButton layer] setBorderWidth:borderWidth];
+//            [[cardButton layer] setBorderColor:borderColor.CGColor];
+//        }
+//    }
+//}
 
 -(NSAttributedString *) getPrettyPlayByPlayForSetGameHistory: (NSString *)recentGameHistory
 {    
@@ -156,18 +145,6 @@
     else if( [shapeId isEqualToString:@"Triangle"] )baseShape = @"▲";
     
     return [@"" stringByPaddingToLength:rank withString:baseShape startingAtIndex:0];
-}
-
-- (void) handleDealButtonPressed
-{
-    [super handleDealButtonPressed];
-    [self updateUI];
-}
-
--(IBAction)flipCard:(id)sender
-{
-    [self.game flipCardAtIndex:[self.allCards indexOfObject:sender]];
-    [self updateUI];
 }
 
 @end
