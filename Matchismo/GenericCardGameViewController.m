@@ -27,7 +27,7 @@
 
 - (NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.startingCardCount;
+    return self.game.numDealtCards;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -47,9 +47,41 @@
 
 -(CardGame *) game
 {
-    if(!_game) _game = [[[self cardGameClassToInit] alloc] initWithCardCount:self.startingCardCount usingDeck:[[[self deckClassToInit] alloc] init]];
+    if(!_game) _game = [[[self cardGameClassToInit] alloc] initGameWithNumCards:self.startingCardCount usingDeck:[[[self deckClassToInit] alloc] init]];
     
     return _game;
+}
+
+- (IBAction)action_dealMoreCards
+{
+    #define NUM_CARDS_TO_DEAL (3)
+    
+    if( [self.game deckHasMoreCards] )
+    {
+        [self.cardCollectionView performBatchUpdates:^{
+            
+            NSUInteger numExistingCards = self.game.numDealtCards;
+            [self.game dealNewCards:NUM_CARDS_TO_DEAL];
+            NSUInteger currentCardCount = self.game.numDealtCards;
+            NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+            
+            for (int i=numExistingCards; i<currentCardCount; i++)
+                [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+            
+            [self.cardCollectionView insertItemsAtIndexPaths:arrayWithIndexPaths];
+            
+        } completion:nil];
+        
+        NSIndexPath *path = [NSIndexPath indexPathForRow:(self.game.numDealtCards-1) inSection:0];
+        [self scrollToIndexPath:path];
+        
+        [self updateUI];
+    }
+}
+
+-(void) scrollToIndexPath: (NSIndexPath *)indexPath
+{    
+    [self.cardCollectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionBottom animated:TRUE];
 }
 
 - (IBAction)action_cardCollectionTap:(UITapGestureRecognizer *)gesture
@@ -67,6 +99,9 @@
 -(IBAction) action_dealButtonPressed
 {
     self.game = nil;
+    
+    // TODO: should this call both reload and updateUI?
+    [self.cardCollectionView reloadData];
     [self updateUI];
 }
 
@@ -92,12 +127,23 @@
     {
         NSIndexPath *indexPath = [self.cardCollectionView indexPathForCell:cell];
         Card *card = [self.game cardAtIndex:indexPath.item];
-        [self updateCell:cell usingCard:card];
+        
+        if(card.isUnplayable)
+        {
+            [self.game removeDealtCardAtIndex:indexPath.item];
+            [self.cardCollectionView deleteItemsAtIndexPaths:@[indexPath]];
+        }
+        else
+        {
+            [self updateCell:cell usingCard:card];            
+        }
     }
     
     [self updateScoreLabel:[NSString stringWithFormat:@"Score: %d",self.game.score]];
     [self updateFlipsLabel:[NSString stringWithFormat:@"Flips: %d",self.game.flipCount]];
     [self updateGameMessageLabel: [[NSAttributedString alloc] initWithString:self.game.gameHistory.lastObject]];
+    
+    [self doThisActionToUpdateUI];
 }
 
 // implementation left to subclasses
@@ -108,5 +154,8 @@
 
 // implementation left to subclasses
 -(void) updateCell: (UICollectionViewCell *)cell usingCard:(Card *)card { }
+
+// implementation left to subclasses if desired
+-(void) doThisActionToUpdateUI { }
 
 @end

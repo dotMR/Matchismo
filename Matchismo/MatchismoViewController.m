@@ -31,7 +31,7 @@
 
 -(NSUInteger) startingCardCount
 {
-    return 16;
+    return 22;
 }
 
 -(NSString *) cardTypeIdentifier
@@ -56,7 +56,7 @@
                 pCardView.rank = playingCard.rank;
                 pCardView.suit = playingCard.suit;
                 pCardView.faceUp = playingCard.isFaceUp;
-                pCardView.alpha = playingCard.isUnplayable ? 0.3 : 1.0;
+                pCardView.unplayable = playingCard.isUnplayable;
             }
         }
     }

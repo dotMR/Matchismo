@@ -20,18 +20,16 @@
 {
     [super drawRect:rect];
     
-    NSLog(@"Should be drawing a: %@", self.suit);
-    
     if(self.faceUp)
     {
         [self drawCorners];
     }
     else
     {
-        [[UIImage imageNamed:@"bear.jpg"] drawInRect:self.bounds];
+        UIImage *cardBackImage = [UIImage imageNamed:@"bear.jpg"];
+        [cardBackImage drawInRect:self.bounds];
     }
     
-    //    UIImage *cardBackImage = [UIImage imageNamed:@"bear.jpg"];
     //    UIImage *emptyImage = [UIImage imageNamed:@"1x1-pixel.png"];
     //    [cardButton setImageEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
     

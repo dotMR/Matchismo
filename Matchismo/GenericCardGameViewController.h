@@ -25,4 +25,7 @@
 -(Class) cardGameClassToInit;
 -(void) updateCell: (UICollectionViewCell *)cell usingCard:(Card *)card;
 
+// optional hook for subclasses to implement
+-(void) doThisActionToUpdateUI;
+
 @end

@@ -13,9 +13,12 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CardViewCell.h"
 #import "SetCardView.h"
+#import "SelectedCardView.h"
 
 @interface SetGameViewController ()
 
+@property (weak, nonatomic) IBOutlet SelectedCardView *view_extraField;
+@property (weak, nonatomic) IBOutlet UIButton *btn_DealMoreCards;
 @end
 
 @implementation SetGameViewController
@@ -32,12 +35,20 @@
 
 -(NSUInteger) startingCardCount
 {
-    return 20;
+    return 12;
 }
 
 -(NSString *) cardTypeIdentifier
 {
     return @"SetCard";
+}
+
+-(void) doThisActionToUpdateUI
+{
+    self.btn_DealMoreCards.enabled = [self.game deckHasMoreCards];
+    
+    // TODO: working on adding cards into view
+//    self.view_extraField.selectedCards = [self.game matchCards];
 }
 
 -(void) updateCell:(UICollectionViewCell *)cell usingCard:(Card *)card
@@ -60,23 +71,7 @@
                 setCardView.color = setCard.color;
                 setCardView.fillPattern = setCard.fillPattern;
                 setCardView.faceUp = setCard.isFaceUp;
-                
-                //            UIColor *borderColor = [UIColor grayColor];
-                //            CGFloat borderWidth = 1;
-                //            CGFloat cardAlpha = 1;
-                //
-                //            if(card.isFaceUp)
-                //            {
-                //                borderColor = [UIColor greenColor];
-                //                borderWidth = 2;
-                //                cardAlpha = 0.35;
-                //            }
-                //            if (card.isUnplayable)
-                //            {
-                //                cardAlpha = 0.1;
-                //            }
-                //            [[cardButton layer] setBorderWidth:borderWidth];
-                //            [[cardButton layer] setBorderColor:borderColor.CGColor];
+                setCardView.unplayable = setCard.isUnplayable;
             }
         }
     }

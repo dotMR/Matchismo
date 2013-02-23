@@ -10,17 +10,14 @@
 #import "CardGame_extension.h"
 #import "Deck.h"
 
-// subclass extended interface in _extension file above
+// NOTE: extended interface for subclasses in _extension file above
 
 @implementation CardGame
 
-#define FLIP_COST (-1)
-#define NUM_CARDS_TO_MATCH (2)
-
--(NSMutableArray *)cards
+-(NSMutableArray *)dealtCards
 {
-    if(!_cards) _cards = [[NSMutableArray alloc] init];
-    return _cards;
+    if(!_dealtCards) _dealtCards = [[NSMutableArray alloc] init];
+    return _dealtCards;
 }
 
 -(NSMutableArray *)gameHistory
@@ -31,11 +28,13 @@
 
 -(int) flipCost
 {
+    #define FLIP_COST (-1)
     return FLIP_COST;
 }
 
 -(int) numCardsToMatch
 {
+    #define NUM_CARDS_TO_MATCH (2)
     return NUM_CARDS_TO_MATCH;
 }
 
@@ -46,7 +45,7 @@
 
 -(Card *)cardAtIndex:(NSUInteger)index
 {
-    return (index < self.cards.count) ? self.cards[index] : nil;
+    return (index < self.dealtCards.count) ? self.dealtCards[index] : nil;
 }
 
 -(void)flipCardAtIndex:(NSUInteger)index
@@ -60,6 +59,8 @@
             self.flipCount++;
             self.score += [self flipCost];
             
+            [self recordGameAction:[NSString stringWithFormat:@"Flipped: %@", card.contents]];
+            
             // hook for subclasses
             [self doThisActionOnFlippedCard:card];
         }
@@ -68,11 +69,44 @@
     }
 }
 
+-(void) removeDealtCardAtIndex:(NSUInteger)index
+{
+    [self.dealtCards removeObject:[self cardAtIndex:index]];
+}
+
+-(void) dealNewCards:(NSUInteger) numNewCards
+{
+    for (int i=0; i<numNewCards; i=i+1) { [self dealCard]; }
+    [self recordGameAction: [NSString stringWithFormat:@"Dealt %d Cards", numNewCards]];
+    
+    if( ![self deckHasMoreCards] ) { [self recordGameAction:@"The Deck is Empty"]; }
+}
+
+-(BOOL) deckHasMoreCards
+{
+    return ![self.deck isEmpty];
+}
+
+-(void) dealCard
+{
+    Card *newCard = [self.deck drawRandomCard];
+    
+    if(newCard)
+    {
+        [self.dealtCards addObject:newCard];
+    }
+}
+
+- (NSUInteger) numDealtCards
+{
+    return [self.dealtCards count];
+}
+
 -(int) numPlayableFaceUpCards
 {
     int numCards = 0;
     
-    for(Card *card in self.cards)
+    for(Card *card in self.dealtCards)
     {
         if(card.isFaceUp && !card.isUnplayable)
         {
@@ -83,24 +117,20 @@
     return numCards;
 }
 
--(void) doThisActionOnFlippedCard:(Card *)cardJustFlipped
-{
-    [self recordGameAction:[NSString stringWithFormat:@"Flipped: %@", cardJustFlipped.contents]];
-}
-
 // designated initializer
--(id) initWithCardCount:(NSUInteger)cardCount usingDeck:(Deck *)deck
+-(id) initGameWithNumCards:(NSUInteger)numCards usingDeck:(Deck *)deck
 {
     self = [super init];
+    self.deck = deck;
     
     if(self) {
-        for(int i=0; i < cardCount; i++) {
-            Card *card = [deck drawRandomCard];
+        for(int i=0; i < numCards; i++) {
+            Card *card = [self.deck drawRandomCard];
             
             if(!card) {
                 self = nil;
             } else {
-                self.cards[i] = card;
+                self.dealtCards[i] = card;
             }
         }
     }
@@ -110,5 +140,9 @@
     
     return self;
 }
+
+// abstract hook for subclasses
+-(void) doThisActionOnFlippedCard:(Card *)cardJustFlipped { }
+-(void) doThisActionToUpdateUI { }
 
 @end

@@ -15,6 +15,8 @@
 @property (nonatomic) int flipCount;
 @property (strong, nonatomic) NSMutableArray *gameHistory;
 
-@property (strong, nonatomic) NSMutableArray *cards;
+@property (strong, nonatomic) Deck *deck;
+@property (strong, nonatomic) NSMutableArray *dealtCards;
 @property (strong, nonatomic) NSMutableArray *matchCards;
+
 @end

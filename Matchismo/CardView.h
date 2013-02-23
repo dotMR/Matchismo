@@ -12,7 +12,8 @@
 
 @property (nonatomic) NSUInteger rank;
 @property (nonatomic) BOOL faceUp;
+@property (nonatomic) BOOL unplayable;
 
-// subclasses should call [super drawRect if they require the surrounding card shape
+// NOTE: subclasses should call [super drawRect] if they require the surrounding card shape
 
 @end

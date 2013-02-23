@@ -24,7 +24,7 @@
         BOOL matchFailed = FALSE;
         NSMutableArray * cardsMatched = [[NSMutableArray alloc] init];
         
-        for(Card *thisCard in self.cards)
+        for(Card *thisCard in self.dealtCards)
         {
             if(thisCard.isFaceUp && !thisCard.isUnplayable && ![cardJustFlipped isEqual:thisCard])
             {
@@ -60,11 +60,14 @@
         {
             action = [NSString stringWithFormat: @"Matched %@, %@ for %d points!", cardJustFlipped.contents, [cardsMatched componentsJoinedByString:@", "], totalMoveScore];
             
+            // cleanup cards and deck
             cardJustFlipped.unplayable = YES;
+//            [self removeDealtCard:cardJustFlipped];
             
             for(Card *c in cardsMatched)
             {
                 c.faceUp = c.unplayable = YES;
+//                [self removeDealtCard:c];
             }
         }
         

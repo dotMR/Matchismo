@@ -41,4 +41,13 @@
     return randomCard;
 }
 
+- (BOOL) isEmpty
+{
+    if(self.cards.count) {
+        return ([self.cards count] <= 0);
+    }
+    
+    return true;
+}
+
 @end

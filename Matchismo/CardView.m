@@ -22,6 +22,12 @@
     [self setNeedsDisplay];
 }
 
+-(void)setUnplayable:(BOOL)unplayable
+{
+    _unplayable = unplayable;
+    [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     // draw actual card shape and fill white
@@ -29,10 +35,20 @@
     UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:5.0];
     [roundedRect addClip];
     
+    // state dependent alpha and border color
+    UIColor *borderColor = [UIColor blackColor];
+    
+    if(self.faceUp || self.unplayable) { borderColor = [UIColor grayColor]; }
+    
+    self.alpha = (self.unplayable) ? 0.3 : 1;
+    
+    // white background for card
     [[UIColor whiteColor] setFill];
     UIRectFill(self.bounds);
     
-    [[UIColor blackColor] setStroke];
+    // card border
+    [borderColor setStroke];
+    [roundedRect setLineWidth:2];
     [roundedRect stroke];
 }
 

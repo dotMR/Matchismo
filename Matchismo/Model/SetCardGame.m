@@ -39,7 +39,7 @@
             
             NSMutableArray * selectedCards = [[NSMutableArray alloc] init];
             
-            for(Card *thisCard in self.cards)
+            for(Card *thisCard in self.dealtCards)
             {
                 if(thisCard.isFaceUp && !thisCard.isUnplayable && ![setCard isEqual:thisCard])
                 {
@@ -78,6 +78,7 @@
             self.score += matchScore;
             [self recordGameAction:action];
             [selectedCards removeAllObjects];
+
         }
         
         if(!noAction) {

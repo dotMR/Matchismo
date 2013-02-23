@@ -13,15 +13,20 @@
 @interface CardGame : NSObject
 
 // designated initializer
-- (id)initWithCardCount:(NSUInteger)cardCount usingDeck:(Deck *)deck;
+-(id) initGameWithNumCards:(NSUInteger)numCards usingDeck:(Deck *)deck;
 
 // read-only display properties
 @property (nonatomic, readonly) int score;
 @property (nonatomic, readonly) int flipCount;
+@property (nonatomic, readonly) NSUInteger numDealtCards;
 @property (nonatomic, readonly) NSMutableArray *gameHistory;
+@property (nonatomic, readonly) NSMutableArray *matchCards;
 
 -(Card *) cardAtIndex:(NSUInteger)index;
 -(void) flipCardAtIndex:(NSUInteger)index;
+-(void) removeDealtCardAtIndex:(NSUInteger)index;
+-(BOOL) deckHasMoreCards;
+-(void) dealNewCards:(NSUInteger) numNewCards;
 -(void) recordGameAction:(NSString *)gameMove;
 -(int) numPlayableFaceUpCards;
 
@@ -29,7 +34,7 @@
 -(int) flipCost;
 -(int) numCardsToMatch;
 
-// abstract - for subclasses to implement (useful for matching and scoring logic)
+// abstract - for subclasses to implement (useful for matching and scoring logic or changes to UI)
 -(void) doThisActionOnFlippedCard:(Card *)cardJustFlipped;
 
 @end

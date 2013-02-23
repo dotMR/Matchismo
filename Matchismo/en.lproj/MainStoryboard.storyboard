@@ -27,7 +27,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Play-by-Play" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JTq-nd-vcu">
-                                <rect key="frame" x="0.0" y="11" width="320" height="21"/>
+                                <rect key="frame" x="0.0" y="5" width="320" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="highlightedColor"/>
@@ -55,25 +55,25 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="Oc0-w5-v37">
-                                <rect key="frame" x="0.0" y="40" width="320" height="319"/>
+                                <rect key="frame" x="0.0" y="29" width="320" height="330"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.16862745579999999" green="0.50588238240000005" blue="0.086274512110000007" alpha="1" colorSpace="deviceRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1mP-PJ-kr3">
-                                    <size key="itemSize" width="65" height="90"/>
+                                    <size key="itemSize" width="70" height="90"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="4" minY="8" maxX="4" maxY="8"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlayingCard" id="MAi-nb-HQQ" customClass="CardViewCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="65" height="90"/>
+                                        <rect key="frame" x="4" y="8" width="70" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="65" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" restorationIdentifier="PlayingCard" id="scw-ph-0eo" customClass="PlayingCardView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="65" height="90"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
@@ -91,7 +91,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.16862745579999999" green="0.50588238240000005" blue="0.086274512110000007" alpha="1" colorSpace="deviceRGB"/>
                         <gestureRecognizers/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="l1v-rj-etZ" appends="YES" id="qCG-aV-Z59"/>
@@ -123,7 +123,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="f3h-9t-jlZ">
-                                <rect key="frame" x="112" y="361" width="90" height="38"/>
+                                <rect key="frame" x="216" y="363" width="84" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Deal">
@@ -138,46 +138,40 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lYQ-IF-ryd">
-                                <rect key="frame" x="0.0" y="11" width="320" height="21"/>
+                                <rect key="frame" x="168" y="14" width="132" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Flips: 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8sd-7U-skQ">
-                                <rect key="frame" x="13" y="369" width="99" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Score: 0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6LM-N4-hw4">
-                                <rect key="frame" x="218" y="369" width="92" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Score: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6LM-N4-hw4">
+                                <rect key="frame" x="117" y="369" width="87" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="SqN-Dx-DZi">
-                                <rect key="frame" x="0.0" y="41" width="320" height="312"/>
+                                <rect key="frame" x="0.0" y="73" width="320" height="280"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.16862745579999999" green="0.50588238240000005" blue="0.086274512110000007" alpha="1" colorSpace="deviceRGB"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="BHG-7g-ay2">
-                                    <size key="itemSize" width="70" height="90"/>
+                                <gestureRecognizers/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="8" id="BHG-7g-ay2">
+                                    <size key="itemSize" width="65" height="75"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="6" minY="8" maxX="6" maxY="8"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SetCard" id="Oxq-cF-fcC" customClass="CardViewCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
+                                        <rect key="frame" x="6" y="8" width="65" height="75"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="65" height="75"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view opaque="NO" contentMode="scaleToFill" restorationIdentifier="SetCard" id="o0N-FL-Zu7" customClass="SetCardView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="65" height="75"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </view>
@@ -191,19 +185,50 @@
                                 </cells>
                                 <connections>
                                     <outlet property="dataSource" destination="07C-aA-QxV" id="hbG-YU-2V1"/>
+                                    <outletCollection property="gestureRecognizers" destination="G4b-7D-Pzt" appends="YES" id="j97-Yd-CaV"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="snm-31-IRa">
+                                <rect key="frame" x="20" y="363" width="84" height="36"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="3 more">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="action_dealMoreCards" destination="07C-aA-QxV" eventType="touchUpInside" id="0vW-uQ-xDC"/>
+                                </connections>
+                            </button>
+                            <view opaque="NO" contentMode="scaleToFill" id="DAB-i3-2zq" customClass="SelectedCardView">
+                                <rect key="frame" x="-11" y="-72" width="169" height="137"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.16862745579999999" green="0.50588238240000005" blue="0.086274512110000007" alpha="1" colorSpace="deviceRGB"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Set" id="Ccj-eq-han"/>
                     <connections>
-                        <outlet property="lbl_Flips" destination="8sd-7U-skQ" id="OE4-g1-CpF"/>
+                        <outlet property="btn_DealMoreCards" destination="snm-31-IRa" id="OKf-Zt-vT2"/>
+                        <outlet property="cardCollectionView" destination="SqN-Dx-DZi" id="dlq-uT-jgk"/>
                         <outlet property="lbl_GameMessage" destination="lYQ-IF-ryd" id="0Vr-hF-lWm"/>
                         <outlet property="lbl_Score" destination="6LM-N4-hw4" id="cGI-vq-tZA"/>
+                        <outlet property="view_extraField" destination="DAB-i3-2zq" id="zlf-2o-rst"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4g-Ja-KhE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="G4b-7D-Pzt">
+                    <connections>
+                        <action selector="action_cardCollectionTap:" destination="07C-aA-QxV" id="YOc-mn-9dq"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="26" y="373"/>
         </scene>
@@ -253,11 +278,18 @@
         <class className="PlayingCardView" superclassName="CardView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/PlayingCardView.h"/>
         </class>
+        <class className="SelectedCardView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SelectedCardView.h"/>
+        </class>
         <class className="SetCardView" superclassName="CardView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SetCardView.h"/>
         </class>
         <class className="SetGameViewController" superclassName="GenericCardGameViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SetGameViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="btn_DealMoreCards" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="view_extraField" candidateClass="SelectedCardView"/>
+            </relationships>
         </class>
         <class className="UICollectionReusableView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UICollectionReusableView.h"/>

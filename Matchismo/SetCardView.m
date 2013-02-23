@@ -33,6 +33,12 @@
 {
     [super drawRect:rect];
     
+    // to determine which cards are currently selected
+    if(!self.unplayable)
+    {
+        self.alpha = (self.faceUp) ? 0.75 : 1;
+    }
+    
     UIBezierPath *shapeToDraw;
     UIColor *colorToDraw;
     
@@ -43,9 +49,6 @@
     if( [self.shape isEqualToString:@"Square"] ) { shapeToDraw = [self createDiamondCardPath]; }
     else if( [self.shape isEqualToString:@"Circle"] ) { shapeToDraw = [self createPillCardPath]; }
     else if( [self.shape isEqualToString:@"Triangle"] ){ shapeToDraw = [self createSquiggleCardPath]; }
-    
-    // DEBUG CODE
-//    [self drawRankInCorner];
     
     if( [self.fillPattern isEqualToString:@"Solid"] )
     {
@@ -129,27 +132,11 @@
     return squiggle;
 }
 
-// for debugging purposes
--(void) drawRankInCorner
-{
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-    paragraphStyle.alignment = NSTextAlignmentCenter;
-    
-    UIFont *cornerFont = [UIFont systemFontOfSize:self.bounds.size.width * 0.20];
-    
-    NSAttributedString *cornerText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", self.rank] attributes:@{NSParagraphStyleAttributeName : paragraphStyle, NSFontAttributeName : cornerFont}];
-    
-    CGRect textBounds;
-    textBounds.origin = CGPointMake(2.0, 2.0);
-    textBounds.size = [cornerText size];
-    [cornerText drawInRect:textBounds];
-}
-
 -(UIBezierPath *) createSquiggleCardPath
 {
     UIBezierPath *path = [UIBezierPath bezierPath];
-    CGFloat squiggleWidth = 44;
-    CGFloat squiggleHeight = 18;
+    CGFloat squiggleWidth = 42;
+    CGFloat squiggleHeight = 15;
     
     for(int n=1;n<(self.rank+1);n=n+1)
     {
@@ -163,8 +150,8 @@
 
 - (UIBezierPath *) createPillCardPath
 {
-    CGFloat pillWidth = 44;
-    CGFloat pillHeight = 18;
+    CGFloat pillWidth = 42;
+    CGFloat pillHeight = 15;
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     
@@ -180,8 +167,8 @@
 
 -(UIBezierPath *) createDiamondCardPath
 {
-    CGFloat diamondWidth = 44;
-    CGFloat diamondHeight = 18;
+    CGFloat diamondWidth = 42;
+    CGFloat diamondHeight = 15;
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     
