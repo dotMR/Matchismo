@@ -3,9 +3,6 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "-[SetGameViewController updateUI]:SetGameViewController.m">
-      </ContextState>
-      <ContextState
          contextName = "-[SetCard matchCards:]:SetCard.m">
          <PersistentStrings>
             <PersistentString
@@ -28,6 +25,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[SetGameViewController updateUI]:SetGameViewController.m">
+      </ContextState>
+      <ContextState
          contextName = "main:main.m">
       </ContextState>
       <ContextState
@@ -39,6 +39,14 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "-[SetCardView drawDiamondCard]:SetCardView.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.rank">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "-[SetGameViewController getAttributedStringForCard:]:SetGameViewController.m">
       </ContextState>
       <ContextState
@@ -46,6 +54,14 @@
          <PersistentStrings>
             <PersistentString
                value = "[SetCard maxRank]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[GenericCardGameViewController collectionView:cellForItemAtIndexPath:]:GenericCardGameViewController.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "[self cardTypeIdentifier]">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -11,9 +11,8 @@
 @interface CardView : UIView
 
 @property (nonatomic) NSUInteger rank;
-@property (strong, nonatomic)NSString *suit;
 @property (nonatomic) BOOL faceUp;
 
-- (UIBezierPath *) createContainingCardPath;
+// subclasses should call [super drawRect if they require the surrounding card shape
 
 @end

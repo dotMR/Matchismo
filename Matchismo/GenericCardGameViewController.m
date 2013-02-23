@@ -32,7 +32,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell * view = [collectionView dequeueReusableCellWithReuseIdentifier:@"Card" forIndexPath:indexPath];
+    UICollectionViewCell * view = [collectionView dequeueReusableCellWithReuseIdentifier:[self cardTypeIdentifier] forIndexPath:indexPath];
     
     if( [view isKindOfClass:[CardViewCell class]] )
     {

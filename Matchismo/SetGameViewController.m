@@ -11,6 +11,8 @@
 #import "SetCardGame.h"
 #import "SetCard.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CardViewCell.h"
+#import "SetCardView.h"
 
 @interface SetGameViewController ()
 
@@ -33,41 +35,52 @@
     return 20;
 }
 
-// TODO: does the getCardAtIndex() method really need to care about generic Cards here?
-//-(void) updateUI
-//{
-//    for (UIButton *cardButton in self.allCards) {
-//        Card *card = [self.game cardAtIndex:[self.allCards indexOfObject:cardButton]];
-//        
-//        if( [card isKindOfClass:[SetCard class]] )
-//        {
-//            SetCard *setCard = (SetCard *)card;
-//            
-//            [cardButton setAttributedTitle:[self getAttributedStringToRepresentCardWithRank:setCard.rank andShape:setCard.shape andFill:setCard.fillPattern andColor:setCard.color] forState:UIControlStateNormal];
-//            
-//            UIColor *borderColor = [UIColor grayColor];
-//            CGFloat borderWidth = 1;
-//            CGFloat cardAlpha = 1;
-//            
-//            if(card.isFaceUp)
-//            {
-//                borderColor = [UIColor greenColor];
-//                borderWidth = 2;
-//                cardAlpha = 0.35;
-//            }
-//            if (card.isUnplayable)
-//            {
-//                cardAlpha = 0.1;
-//            }
-//
-//            cardButton.selected = card.isFaceUp;
-//            cardButton.enabled = !card.isUnplayable;
-//            cardButton.alpha = cardAlpha;
-//            [[cardButton layer] setBorderWidth:borderWidth];
-//            [[cardButton layer] setBorderColor:borderColor.CGColor];
-//        }
-//    }
-//}
+-(NSString *) cardTypeIdentifier
+{
+    return @"SetCard";
+}
+
+-(void) updateCell:(UICollectionViewCell *)cell usingCard:(Card *)card
+{
+    if( [card isKindOfClass:[SetCard class]])
+    {
+        SetCard *setCard = (SetCard *)card;
+        
+        if( [cell isKindOfClass:[CardViewCell class]] )
+        {
+            CardViewCell *cardViewCell = (CardViewCell *)cell;
+            CardView *view = cardViewCell.cardView;
+            
+            if( [view isKindOfClass:[SetCardView class]] )
+            {
+                SetCardView *setCardView = (SetCardView *)view;
+                
+                setCardView.rank = setCard.rank;
+                setCardView.shape = setCard.shape;
+                setCardView.color = setCard.color;
+                setCardView.fillPattern = setCard.fillPattern;
+                setCardView.faceUp = setCard.isFaceUp;
+                
+                //            UIColor *borderColor = [UIColor grayColor];
+                //            CGFloat borderWidth = 1;
+                //            CGFloat cardAlpha = 1;
+                //
+                //            if(card.isFaceUp)
+                //            {
+                //                borderColor = [UIColor greenColor];
+                //                borderWidth = 2;
+                //                cardAlpha = 0.35;
+                //            }
+                //            if (card.isUnplayable)
+                //            {
+                //                cardAlpha = 0.1;
+                //            }
+                //            [[cardButton layer] setBorderWidth:borderWidth];
+                //            [[cardButton layer] setBorderColor:borderColor.CGColor];
+            }
+        }
+    }
+}
 
 -(NSAttributedString *) getPrettyPlayByPlayForSetGameHistory: (NSString *)recentGameHistory
 {    

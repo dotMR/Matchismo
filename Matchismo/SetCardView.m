@@ -10,15 +10,73 @@
 
 @implementation SetCardView
 
+-(void)setShape:(NSString *)shape
+{
+    _shape = shape;
+    [self setNeedsDisplay];
+}
+
+-(void)setColor:(NSString *)color
+{
+    _color = color;
+    [self setNeedsDisplay];
+}
+
+-(void)setFillPattern:(NSString *)fillPattern
+{
+    _fillPattern = fillPattern;
+    [self setNeedsDisplay];
+}
+
+// TODO: update constant names, reference back to model rather than hard-code here
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    UIBezierPath *shapeToDraw;
+    UIColor *colorToDraw;
+    
+    if( [self.color isEqualToString: @"Red"] ) colorToDraw = [UIColor redColor];
+    else if( [self.color isEqualToString: @"Blue"] ) colorToDraw = [UIColor blueColor];
+    else if( [self.color isEqualToString: @"Purple"] ) colorToDraw = [UIColor greenColor];
+    
+    if( [self.shape isEqualToString:@"Square"] ) { shapeToDraw = [self createDiamondCardPath]; }
+    else if( [self.shape isEqualToString:@"Circle"] ) { shapeToDraw = [self createPillCardPath]; }
+    else if( [self.shape isEqualToString:@"Triangle"] ){ shapeToDraw = [self createSquiggleCardPath]; }
+    
+    // DEBUG CODE
+//    [self drawRankInCorner];
+    
+    if( [self.fillPattern isEqualToString:@"Solid"] )
+    {
+        [colorToDraw setFill];
+        [shapeToDraw fill];
+    }
+    else if ( [self.fillPattern isEqualToString:@"Empty"] || [self.fillPattern isEqualToString:@"Partial"] )
+    {
+        [colorToDraw setStroke];
+        [shapeToDraw setLineWidth:2];
+        [shapeToDraw stroke];
+        
+        if( [self.fillPattern isEqualToString:@"Partial"] )
+        {
+            [shapeToDraw addClip];
+            
+            UIBezierPath *stripes = [self createStripeBackgroundPath];
+            [stripes setLineWidth:0.5];
+            [stripes stroke];
+        }
+    }
+}
+
 - (UIBezierPath *) createPillShapePathWithMidPoint:(CGPoint) midPoint width:(CGFloat)width height:(CGFloat)height
 {
     CGFloat pillRadius = 12;
-    
     return [UIBezierPath bezierPathWithRoundedRect:CGRectMake(midPoint.x-width/2, midPoint.y-height/2, width, height) cornerRadius:pillRadius];
 }
 
-- (UIBezierPath *) createDiamondShapePathWithMidPoint: (CGPoint) midPoint width:(CGFloat)width height:(CGFloat)height
-{
+- (UIBezierPath *) createDiamondShapePathWithMidPoint:(CGPoint) midPoint width:(CGFloat)width height:(CGFloat)height
+{    
     UIBezierPath *diamond = [UIBezierPath bezierPath];
     [diamond moveToPoint:CGPointMake(midPoint.x, midPoint.y-height/2)];
     [diamond addLineToPoint:CGPointMake(midPoint.x+width/2, midPoint.y)];
@@ -45,7 +103,7 @@
     //
     // ---------------------------
     
-    CGFloat modifier_shape_width = 0.35;
+    CGFloat modifier_shape_width = 0.32;
     CGFloat modifier_shape_height = 0.42;
     
     CGFloat y1 = midPoint.y - height/2;
@@ -71,60 +129,74 @@
     return squiggle;
 }
 
-- (void)drawRect:(CGRect)rect
+// for debugging purposes
+-(void) drawRankInCorner
 {
-    // ##########################
-    // draw actual card
-    // ##########################
-    UIBezierPath *roundedRect = [self createContainingCardPath];
-    [roundedRect addClip];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.alignment = NSTextAlignmentCenter;
     
-    [[UIColor whiteColor] setFill];
-    UIRectFill(self.bounds);
+    UIFont *cornerFont = [UIFont systemFontOfSize:self.bounds.size.width * 0.20];
     
-    [[UIColor blackColor] setStroke];
-    [roundedRect stroke];
+    NSAttributedString *cornerText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%d", self.rank] attributes:@{NSParagraphStyleAttributeName : paragraphStyle, NSFontAttributeName : cornerFont}];
     
-    // ##########################
-    // draw oval 'pill' shape
-    // ##########################
-    CGPoint pillMiddle = CGPointMake(self.bounds.size.width/2.0,self.bounds.size.height/2.0);
-    CGFloat pillWidth = 50;
-    CGFloat pillHeight = 20;
-    
-    UIBezierPath *pill = [self createPillShapePathWithMidPoint:pillMiddle width:pillWidth height:pillHeight];
-    [[UIColor purpleColor] setFill];
-    [pill fill];
-    
-    // ##########################
-    // draw diamond shape
-    // ##########################
-    CGPoint diamondMiddle = CGPointMake(self.bounds.size.width/2.0,self.bounds.size.height*1/4);
-    CGFloat diamondWidth = 46;
-    CGFloat diamondHeight = 20;
-    
-    UIBezierPath *diamond = [self createDiamondShapePathWithMidPoint:diamondMiddle width:diamondWidth height:diamondHeight];
-    [[UIColor redColor] setStroke];
-    [diamond setLineWidth:2];
-    [diamond stroke];
-    
-    // ##########################
-    // draw my squiggle
-    // ##########################
-    CGPoint squiggleMiddle = CGPointMake(self.bounds.size.width/2.0,self.bounds.size.height*3/4);
+    CGRect textBounds;
+    textBounds.origin = CGPointMake(2.0, 2.0);
+    textBounds.size = [cornerText size];
+    [cornerText drawInRect:textBounds];
+}
+
+-(UIBezierPath *) createSquiggleCardPath
+{
+    UIBezierPath *path = [UIBezierPath bezierPath];
     CGFloat squiggleWidth = 44;
-    CGFloat squiggleHeight = 20;
+    CGFloat squiggleHeight = 18;
     
-    UIBezierPath *squiggle = [self createSquiggleShapePathWithMidPoint:squiggleMiddle width:squiggleWidth height:squiggleHeight];
-    [[UIColor greenColor] setStroke];
-    [squiggle setLineWidth:2];
-    [squiggle stroke];
+    for(int n=1;n<(self.rank+1);n=n+1)
+    {
+        CGPoint midPoint = CGPointMake(self.bounds.size.width/2,(n*self.bounds.size.height/(self.rank+1)));
+        UIBezierPath *squiggle = [self createSquiggleShapePathWithMidPoint:midPoint width:squiggleWidth height:squiggleHeight];
+        [path appendPath:squiggle];
+    }
     
-    // ##########################
-    // striped background for squiggle
-    // ##########################
-    [squiggle addClip];
+    return path;
+}
+
+- (UIBezierPath *) createPillCardPath
+{
+    CGFloat pillWidth = 44;
+    CGFloat pillHeight = 18;
     
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    
+    for(int n=1;n<(self.rank+1);n=n+1)
+    {
+        CGPoint midPoint = CGPointMake(self.bounds.size.width/2,(n*self.bounds.size.height/(self.rank+1)));
+        UIBezierPath *pill = [self createPillShapePathWithMidPoint:midPoint width:pillWidth height:pillHeight];
+        [path appendPath:pill];
+    }
+    
+    return path;
+}
+
+-(UIBezierPath *) createDiamondCardPath
+{
+    CGFloat diamondWidth = 44;
+    CGFloat diamondHeight = 18;
+    
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    
+    for(int n=1;n<(self.rank+1);n=n+1)
+    {
+        CGPoint midPoint = CGPointMake(self.bounds.size.width/2,(n*self.bounds.size.height/(self.rank+1)));
+        UIBezierPath *diamond = [self createDiamondShapePathWithMidPoint:midPoint width:diamondWidth height:diamondHeight];
+        [path appendPath:diamond];
+    }
+    
+    return path;
+}
+
+-(UIBezierPath *) createStripeBackgroundPath
+{
     UIBezierPath *stripes = [UIBezierPath bezierPath];
     
     for(int y=0;y<(self.bounds.size.height-3);y=y+3)
@@ -133,8 +205,7 @@
         [stripes addLineToPoint:CGPointMake(self.bounds.size.width, y)];
     }
     
-    [stripes setLineWidth:0.5];
-    [stripes stroke];
+    return stripes;
 }
 
 

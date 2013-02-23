@@ -11,6 +11,7 @@
 #import "MatchismoCardGame.h"
 #import "CardViewCell.h"
 #import "CardView.h"
+#import "PlayingCardView.h"
 #import "PlayingCard.h"
 
 @interface MatchismoViewController ()
@@ -33,19 +34,30 @@
     return 16;
 }
 
+-(NSString *) cardTypeIdentifier
+{
+    return @"PlayingCard";
+}
+
 -(void) updateCell:(UICollectionViewCell *)cell usingCard:(Card *)card
 {
     if( [cell isKindOfClass:[CardViewCell class]] )
     {
         CardView *view = ((CardViewCell *)cell).cardView;
         
-        if( [card isKindOfClass:[PlayingCard class]] )
+        if( [view isKindOfClass:[PlayingCardView class]] )
         {
-            PlayingCard *playingCard = (PlayingCard *)card;
-            view.rank = playingCard.rank;
-            view.suit = playingCard.suit;
-            view.faceUp = playingCard.isFaceUp;
-            view.alpha = playingCard.isUnplayable ? 0.3 : 1.0;
+            PlayingCardView *pCardView = (PlayingCardView *)view;
+
+            if( [card isKindOfClass:[PlayingCard class]] )
+            {
+                PlayingCard *playingCard = (PlayingCard *)card;
+                
+                pCardView.rank = playingCard.rank;
+                pCardView.suit = playingCard.suit;
+                pCardView.faceUp = playingCard.isFaceUp;
+                pCardView.alpha = playingCard.isUnplayable ? 0.3 : 1.0;
+            }
         }
     }
 }

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CardGame.h"
 #import "Deck.h"
-#import "CardViewCell.h"
 
 @interface GenericCardGameViewController : UIViewController
 
@@ -21,10 +20,9 @@
 
 // abstract: subclasses need to implement
 @property (nonatomic) NSUInteger startingCardCount;
+@property (nonatomic) NSString *cardTypeIdentifier;
 -(Class) deckClassToInit;
 -(Class) cardGameClassToInit;
 -(void) updateCell: (UICollectionViewCell *)cell usingCard:(Card *)card;
-
-
 
 @end

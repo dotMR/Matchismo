@@ -65,14 +65,14 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Card" id="MAi-nb-HQQ" customClass="CardViewCell">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PlayingCard" id="MAi-nb-HQQ" customClass="CardViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="65" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="65" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" restorationIdentifier="Card" id="scw-ph-0eo" customClass="CardView">
+                                                <view contentMode="scaleToFill" restorationIdentifier="PlayingCard" id="scw-ph-0eo" customClass="PlayingCardView">
                                                     <rect key="frame" x="0.0" y="0.0" width="65" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -169,14 +169,14 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="Card" id="Oxq-cF-fcC" customClass="CardViewCell">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SetCard" id="Oxq-cF-fcC" customClass="CardViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view opaque="NO" contentMode="scaleToFill" restorationIdentifier="Card" id="3JE-Pv-kaj" customClass="SetCardView">
+                                                <view opaque="NO" contentMode="scaleToFill" restorationIdentifier="SetCard" id="o0N-FL-Zu7" customClass="SetCardView">
                                                     <rect key="frame" x="0.0" y="0.0" width="70" height="90"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -184,6 +184,9 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
+                                        <connections>
+                                            <outlet property="cardView" destination="o0N-FL-Zu7" id="UlE-Md-Nzb"/>
+                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -246,6 +249,9 @@
         </class>
         <class className="MatchismoViewController" superclassName="GenericCardGameViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MatchismoViewController.h"/>
+        </class>
+        <class className="PlayingCardView" superclassName="CardView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/PlayingCardView.h"/>
         </class>
         <class className="SetCardView" superclassName="CardView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SetCardView.h"/>

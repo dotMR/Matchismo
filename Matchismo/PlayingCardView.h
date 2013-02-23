@@ -10,4 +10,6 @@
 
 @interface PlayingCardView : CardView
 
+@property (strong, nonatomic)NSString *suit;
+
 @end

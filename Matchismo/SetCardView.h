@@ -11,4 +11,8 @@
 
 @interface SetCardView : CardView
 
+@property (strong, nonatomic)NSString *shape;
+@property (strong, nonatomic)NSString *color;
+@property (strong, nonatomic)NSString *fillPattern;
+
 @end
